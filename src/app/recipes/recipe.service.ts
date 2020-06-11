@@ -9,29 +9,34 @@ export class RecipeService {
     recipesChanged = new Subject<Recipe[]>();
 
     private recipes: Recipe[] = [
-        new Recipe(
-            'A Test Recipe', 
-            'This is simply a test', 
-            'https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/spaghetti-puttanesca_1.jpg',
-            [
-                new Ingredient('Bread', 2),
-                new Ingredient('Tomato Sauce', 1),
-                new Ingredient('Chicken Nuggets', 10)
-            ]
-            ),
-        new Recipe(
-            'Another Test Recipe', 
-            'This is simply another test', 
-            'https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/spaghetti-puttanesca_1.jpg',
-            [
-                new Ingredient('Pasta', 1),
-                new Ingredient('White Pasta Sauce', 1),
-                new Ingredient('Fries', 20)
-            ]
-            )
+        // new Recipe(
+        //     'A Test Recipe', 
+        //     'This is simply a test', 
+        //     'https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/spaghetti-puttanesca_1.jpg',
+        //     [
+        //         new Ingredient('Bread', 2),
+        //         new Ingredient('Tomato Sauce', 1),
+        //         new Ingredient('Chicken Nuggets', 10)
+        //     ]
+        //     ),
+        // new Recipe(
+        //     'Another Test Recipe', 
+        //     'This is simply another test', 
+        //     'https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/spaghetti-puttanesca_1.jpg',
+        //     [
+        //         new Ingredient('Pasta', 1),
+        //         new Ingredient('White Pasta Sauce', 1),
+        //         new Ingredient('Fries', 20)
+        //     ]
+        //     )
       ];
 
       constructor(private shoppingListService: ShoppingListService) {}
+
+      setRecipes(recipes: Recipe[]) {
+        this.recipes = recipes;
+        this.recipesChanged.next(this.recipes.slice());
+      }
 
       getRecipes() {
           return this.recipes.slice();
