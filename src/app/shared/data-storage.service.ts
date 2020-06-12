@@ -1,13 +1,15 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, take, exhaustMap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user.model';
 
 @Injectable()
 export class DataStorageService {
 
-    constructor(private http: HttpClient, private recipeService: RecipeService) {}
+    constructor(private http: HttpClient, private recipeService: RecipeService, private authService: AuthService) {}
 
     storeRecipes() {
         const recipes = this.recipeService.getRecipes();
@@ -20,8 +22,10 @@ export class DataStorageService {
     }
 
     fetchRecipes() {
-        return this.http.get('https://ng-complete-guide-b8aeb.firebaseio.com/recipes.json')
-        .pipe(map(
+
+        // take operator allows us to subscribe n times and then automatically unsubscribes
+        return this.http.get('https://ng-complete-guide-b8aeb.firebaseio.com/recipes.json').pipe(
+        map(
             (recipes: Recipe[]) => {
                 return recipes.map(
                     recipe => {
